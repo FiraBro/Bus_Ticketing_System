@@ -1,254 +1,81 @@
-# Bus Ticketing System
+# Bus Ticketing System Monorepo
 
-A full-stack bus ticket booking platform that allows passengers to search trips, reserve seats, make payments, and receive tickets — while operators and admins manage routes, buses, and bookings.
-
----
-
-## Project Overview
-
-This system is designed as a **modular monolithic application** with:
-
-- One backend service (Node.js + Express)
-- One frontend application (React)
-- PostgreSQL for persistent data
-- Redis for seat locking and caching
-
-The goal is to build a **real-world, scalable MVP** that can evolve into a distributed system later.
-
----
-
-## User Roles
-
-### Passenger
-
-- Search for trips
-- Select seats
-- Book tickets
-- Make payments
-- View or cancel bookings
-
-### Operator
-
-- Manage routes
-- Create trips
-- Assign buses
-- Configure seat layouts and pricing
-
-### Admin
-
-- Full system access
-- Manage users & operators
-- View bookings & reports
-- Monitor system metrics
-
----
-
-## Core Features
-
-### Authentication & Authorization
-
-- Email & password login
-- JWT-based authentication
-- Role-based access control (`passenger`, `operator`, `admin`)
-
----
-
-### Route & Trip Management
-
-- Create and manage routes
-- Assign buses to trips
-- Define schedules and pricing
-
----
-
-### Bus & Seat Management
-
-- Configurable bus types (AC, sleeper, seater)
-- JSON-based seat layout
-- Real-time seat availability
-
----
-
-### Trip Search
-
-- Search by origin, destination, and date
-- Filter by price, bus type, and time
-
----
-
-### Booking System
-
-- Seat selection with locking mechanism
-- Passenger detail entry
-- Booking creation and tracking
-
----
-
-### Seat Locking (Concurrency Control)
-
-- Temporary seat lock (e.g., 5 minutes)
-- Prevents double booking
-- Redis-based implementation
-
----
-
-### Payments
-
-- Stripe integration (initial provider)
-- Secure payment flow
-- Webhook-based confirmation
-- Handles failures & retries
-
----
-
-### Ticketing
-
-- Auto-generated tickets after payment
-- Includes:
-  - Ticket ID
-  - Passenger info
-  - Trip details
-  - Seat number
-  - QR/verification code
-
----
-
-### Notifications
-
-- Email confirmations
-- Booking updates
-- Trip reminders
-
----
-
-### Admin Dashboard
-
-- Manage routes, trips, buses
-- View bookings
-- Basic analytics:
-  - Revenue
-  - Total bookings
-  - Occupancy rate
-
----
+Enterprise-grade Bus Ticketing System built with a scalable monorepo architecture. 
+Featuring TypeScript, Docker, Prisma, PostgreSQL, React, and Express.
 
 ## Project Structure
 
-- bus-ticketing-system/
-  ├── client/ # React frontend
-  ├── server/ # Node.js backend
-  ├── infra/ # Docker & deployment configs
-  ├── docs/ # Documentation
-  ├── docker-compose.yml
-  └── README.md
+```txt
+bus-ticketing-system/
+├── apps/
+│   ├── web/           # React + Vite frontend
+│   └── api/           # Express + Prisma backend
+├── packages/
+│   └── types/         # Shared TypeScript interfaces & DTOs
+└── docker/            # Nginx config and Docker files
+```
 
----
+## Running the Application
+
+This project provides `docker-compose` setups for seamless development and production environments.
+
+### Development Mode
+
+Run the entire stack with hot-reloading:
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3000
+
+Alternatively, run locally without Docker:
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start services:
+   ```bash
+   npm run dev
+   ```
+
+### Production Mode
+
+Run the production-grade multi-stage container build behind Nginx:
+
+```bash
+docker-compose up --build
+```
+- Maps port `80` to the frontend static Nginx server.
+- The Nginx proxy handles routing `/api/*` directly to the `api` service.
 
 ## Tech Stack
 
-### Frontend
-
-- React
+### Frontend (`apps/web`)
+- React 18, Vite
+- TypeScript
+- Tailwind CSS
 - React Router
-- Axios / Fetch API
-- Tailwind CSS (optional)
+- React Query & Zustand
+- Zod & React Hook Form
+- Lucide React
 
-### Backend
-
-- Node.js
-- Express.js
+### Backend (`apps/api`)
+- Node.js & Express.js
+- TypeScript
+- Prisma ORM
 - PostgreSQL
-- Redis
+- Docker & Nginx
+- Zod Validation
+- JWT Authentication
 
-### DevOps
+## Modules Implemented
 
-- Docker
-- Docker Compose
-- GitHub Actions (CI/CD)
-
-### Integrations
-
-- Stripe (payments)
-- Email service (Gmail)
-
----
-
-## Database Schema (Simplified)
-
-- Users
-- Routes
-- Stops
-- Buses
-- Trips
-- Seats
-- SeatLocks
-- Bookings
-- Tickets
-- Payments
-
----
-
-## Core System Flows
-
-### Booking Flow
-
-- Search Trip → Select Seats → Lock Seats → Enter Details → Payment → Ticket Generation
-
----
-
-### 🔓 Seat Lock Expiration
-
-- Seat Lock Created → Timer (Redis/DB) → Auto Expire → Release Seats
-
----
-
-## ⚠️ Business Rules
-
-- ❌ A seat cannot be booked twice
-- ⏳ Seat locks must expire automatically
-- 💳 Booking is confirmed only after payment success
-- 🎫 Tickets are generated only after confirmed payment
-- 🔐 Admin routes must be protected
-
----
-
-## 🔐 Security Considerations
-
-- Password hashing (bcrypt)
-- JWT authentication
-- Role-based authorization
-- Input validation
-- Rate limiting
-- HTTPS in production
-
----
-
-## 📦 Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/FiraBro/Bus-Ticketing-System.git
-cd Bus-Ticketing-System
-```
-
-## Setup environment variables
-
-- cp .env.example .env
-
-## Run Docker
-
-- docker-compose up --build
-
-## Final Note
-
-- This project focuses on correctness over complexity:
-
-- Reliable booking system
-- No double seat booking
-- Secure payment handling
-- Accurate ticket generation
-
-## Author
-
-Built with ❤️ by FiraBro
+- **Monorepo setup**: NPM workspaces configured. Shared `@bus/types` package.
+- **Dockerization**: Nginx reverse proxy, multi-stage production builds, hot-reloading dev environments.
+- **Database Architecture**: Full Prisma Schema setup with `User`, `Bus`, `Trip`, `Booking`, and `Seat` relations.
+- **RESTful API**: Global custom error handling, async middleware.
+- **Modules**: Auth (Login/Register), generic Trip and Bus resources backend.
+- **Web**: Modern Tailwind configured scalable React app implementation.
