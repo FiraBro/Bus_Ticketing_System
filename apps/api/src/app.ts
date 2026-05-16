@@ -21,7 +21,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/trips", tripsRoutes);
 
 // Catch-all 404
-app.all("*", (req, res, next) => {
+app.all("*splat", (req, res, next) => {
   next(new NotFoundError(`Route ${req.originalUrl} not found`));
 });
 
