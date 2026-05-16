@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "prisma generate",
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon --watch src --exec \"tsx --env-file=apps/api/.env src/server.ts\"",
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.22.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -31,8 +29,8 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.8.0",
     "nodemon": "^3.1.14",
-    "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.22.0",
     "typescript": "^6.0.3"
   }
 }
