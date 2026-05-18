@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import { env } from "./env";
+import { env } from "./env.js";
 
 const RETRY_ATTEMPTS = 5;
 const RETRY_DELAY_MS = 5000;
 
-async function connectWithRetry(attempt = 1): Promise<void> {
+async function connectWithRetry(attempt = 1) {
   try {
     await mongoose.connect(env.MONGODB_URI, {
       // Connection pool — enough for an MVP, tune later with real traffic
@@ -26,7 +26,7 @@ async function connectWithRetry(attempt = 1): Promise<void> {
   }
 }
 
-export async function connectDatabase(): Promise<void> {
+export async function connectDatabase() {
   mongoose.connection.on("disconnected", () => {
     console.warn("⚠️  MongoDB disconnected.");
   });
@@ -37,7 +37,7 @@ export async function connectDatabase(): Promise<void> {
   await connectWithRetry();
 }
 
-export async function disconnectDatabase(): Promise<void> {
+export async function disconnectDatabase() {
   await mongoose.disconnect();
   console.log("MongoDB disconnected gracefully.");
 }

@@ -1,9 +1,9 @@
 import "dotenv/config";
-import { env } from "./config/env";
-import { connectDatabase, disconnectDatabase } from "./config/db";
-import app from "./app";
+import { env } from "./config/env.js";
+import { connectDatabase, disconnectDatabase } from "./config/db.js";
+import app from "./app.js";
 
-async function bootstrap(): Promise<void> {
+async function bootstrap() {
   await connectDatabase();
 
   const server = app.listen(env.PORT, () => {
@@ -12,7 +12,7 @@ async function bootstrap(): Promise<void> {
 
   // ── Graceful Shutdown ────────────────────────────────────────────────────
   // Finish in-flight requests before closing — important for bookings & payments
-  async function shutdown(signal: string): Promise<void> {
+  async function shutdown(signal) {
     console.log(`\n${signal} received. Shutting down gracefully...`);
     server.close(async () => {
       await disconnectDatabase();

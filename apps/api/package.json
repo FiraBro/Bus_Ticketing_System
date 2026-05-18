@@ -2,11 +2,11 @@
   "name": "@bus/api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon --watch src --exec \"tsx --env-file=apps/api/.env src/server.ts\"",
-    "build": "tsc",
-    "start": "node dist/server.js",
+    "dev": "nodemon --env-file=.env src/server.js",
+    "start": "node --env-file=.env src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -23,17 +23,10 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.2",
+    "nodemailer": "^8.0.7",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^25.8.0",
-    "nodemon": "^3.1.14",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.22.0",
-    "typescript": "^6.0.3"
+    "nodemon": "^3.1.14"
   }
 }
