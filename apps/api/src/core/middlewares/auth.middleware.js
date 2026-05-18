@@ -13,9 +13,9 @@ export const validate = (schema) => (req, _res, next) => {
     next();
   } catch (err) {
     if (err instanceof ZodError) {
-      // Flatten to a human-readable array of { field, message } objects.
-      const errors = err.errors.map((issue) => ({
-        field: issue.path.slice(1).join("."), // Remove the leading "body"/"query" key
+      const errors = err.issues.map((issue) => ({
+        // ← .issues not .errors
+        field: issue.path.slice(1).join("."),
         message: issue.message,
       }));
 
