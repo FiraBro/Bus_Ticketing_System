@@ -1,5 +1,5 @@
 // src/modules/auth/auth.service.js
-
+import { env } from "../../config/env.js";
 import jwt from "jsonwebtoken";
 import User from "./auth.model.js";
 import AppError from "../../core/utils/AppError.js";
@@ -13,23 +13,10 @@ const LOCK_TIME_MS = parseInt(process.env.LOCK_TIME_MS || `${15 * 60 * 1000}`);
 // Helpers
 // ---------------------------------------------------------------------------
 
-const signToken = (userId) => {
-  const secret = process.env.JWT_SECRET;
-  const expiresIn = process.env.JWT_EXPIRES_IN;
-
-  if (!secret) {
-    throw new AppError("JWT_SECRET environment variable is not defined.", 500);
-  }
-
-  if (!expiresIn) {
-    throw new AppError(
-      "JWT_EXPIRES_IN environment variable is not defined.",
-      500,
-    );
-  }
-
-  return jwt.sign({ id: userId }, secret, { expiresIn });
-};
+const signToken = (userId) =>
+  jwt.sign({ id: userId }, env.JWT_ACCESS_SECRET, {
+    expiresIn: env.JWT_ACCESS_EXPIRES_IN,
+  });
 
 const sanitiseUser = (user) => ({
   id: user._id,
