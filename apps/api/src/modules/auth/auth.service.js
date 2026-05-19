@@ -201,3 +201,14 @@ export const getMeService = async (userId) => {
 
   return sanitiseUser(user);
 };
+export const createStaffUser = async (data) => {
+  const existing = await User.findOne({ email: data.email });
+  if (existing) {
+    throw new AppError("Email already registered.", 409);
+  }
+
+  // ALLOWS roles provided in the body because this endpoint is locked behind Admin RBAC
+  const newStaff = await User.create(data);
+
+  return sanitiseUser(newStaff);
+};
