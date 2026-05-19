@@ -67,3 +67,37 @@ export const loginSchema = z.object({
     password: passwordField,
   }),
 });
+
+// ---------------------------------------------------------------------------
+// Staff Creation Schema (Admin-Only Endpoint)
+// ---------------------------------------------------------------------------
+
+/**
+ * Validates the request body for POST /auth/admin/create-staff.
+ *
+ * Accepted shape:
+ * {
+ *   name:     string  (1–60 chars)
+ *   email:    string  (valid email)
+ *   password: string  (8–72 chars)
+ *   role:     string  ('admin' or 'operator')
+ * }
+ */
+export const createStaffZodSchema = z.object({
+  body: z.object({
+    name: z
+      .string({ required_error: "Name is required." })
+      .trim()
+      .min(1, "Name must not be empty.")
+      .max(60, "Name must not exceed 60 characters."),
+
+    email: emailField,
+
+    password: passwordField,
+
+    role: z.enum(["admin", "operator"], {
+      required_error: "Role is required for staff configuration.",
+      invalid_type_error: "Role must be either 'admin' or 'operator'.",
+    }),
+  }),
+});
