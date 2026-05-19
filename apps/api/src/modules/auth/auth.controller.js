@@ -132,3 +132,13 @@ export const getMe = catchAsync(async (req, res) => {
     user,
   });
 });
+
+import { createStaffUser } from "./auth.service.js";
+
+export const registerStaff = async (req, res) => {
+  const staff = await createStaffUser(req.body);
+  res.status(201).json({
+    status: "success",
+    data: { user: staff },
+  });
+};
