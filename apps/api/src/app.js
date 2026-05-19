@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./modules/auth/auth.routes.js";
 import fleetRoutes from "./modules/fleet/fleet.routes.js";
 import inventoryRoutes from "./modules/inventory/inventory.routes.js";
+import searchRoutes from "./modules/search/search.routes.js";
 
 import globalErrorHandler from "./core/middlewares/error.middleware.js";
 const app = express();
@@ -32,11 +33,13 @@ app.get("/", (req, res) => {
 // Versioned APIs
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/buses", fleetRoutes);
-app.use("/api/v1/inventory", inventoryRoutes);
+app.use("/api/v1/trips", searchRoutes);
+app.use("/api/v1", inventoryRoutes);
 
 // Standard / Unversioned APIs
 app.use("/api/buses", fleetRoutes);
-app.use("/api/inventory", inventoryRoutes);
+app.use("/api/trips", searchRoutes);
+app.use("/api", inventoryRoutes);
 
 // =============================================================================
 // Global Error Handler
