@@ -93,8 +93,19 @@ userSchema.index({ role: 1, active: 1 });
 // ---------------------------------------------------------------------------
 // Password Hashing
 // ---------------------------------------------------------------------------
+// userSchema.pre("save", async function () {
+//   if (!this.isModified("password")) return;
+//   this.password = await bcrypt.hash(this.password, 12);
+// });
+// Change your password hashing block to look exactly like this:
+// ---------------------------------------------------------------------------
+// Password Hashing (Modern Async Syntax)
+// ---------------------------------------------------------------------------
 userSchema.pre("save", async function () {
+  // If the password wasn't modified, do nothing and return out of the async execution block
   if (!this.isModified("password")) return;
+
+  // Hash the password directly onto the document
   this.password = await bcrypt.hash(this.password, 12);
 });
 
